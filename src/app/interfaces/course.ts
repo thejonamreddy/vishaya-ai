@@ -4,5 +4,7 @@ export interface Course {
   targetAudience: string,
   learningObjectives: string,
   level: string,
-  duration: string
+  duration: string,
+  status: string,
+  languages: string[]
 }

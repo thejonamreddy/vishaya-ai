@@ -1,4 +1,7 @@
+import { Audio } from "./audio"
+
 interface SubTopic {
+  id: string, 
   key: string,
   subTopic: string,
   description: string,
@@ -6,9 +9,11 @@ interface SubTopic {
 }
 
 export interface Topic {
+  id: string, 
   key: string,
   topic: string,
   description: string,
   subTopics: SubTopic[],
-  selected: boolean
+  selected: boolean,
+  audios: Audio[]
 }
