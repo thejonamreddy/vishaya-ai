@@ -18,6 +18,7 @@ import {
 import { useForm } from "react-hook-form";
 import { Course } from "@/app/interfaces/course";
 import { LoaderCircle } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const CourseFormSchema = z.object({
   title: z.string({ required_error: "Title is required" }),
@@ -25,12 +26,15 @@ export const CourseFormSchema = z.object({
   targetAudience: z.string({ required_error: "Target Audience is required" }),
   learningObjectives: z.string({ required_error: "Learning Objectives is required" }),
   level: z.string({ required_error: "Level is required" }),
-  duration: z.string({ required_error: "Duration is required" })
+  duration: z.string({ required_error: "Duration is required" }),
+  languages: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: "Language is required",
+  }),
 })
 
 interface Props {
   loading: boolean,
-  course: Course,
+  course?: Course,
   submit(formData: z.infer<typeof CourseFormSchema>): void
 }
 
@@ -61,9 +65,25 @@ export default function CourseForm({ loading, course, submit }: Props) {
     '7 - 16 Hours',
     '17+ Hours']
 
+    const languages = [
+      { id: "en-IN", label: "English (India)", disabled: true }, 
+      { id: "hi-IN", label: "Hindi (India)" }, 
+      { id: "bn-IN", label: "Bangla (India)" }, 
+      { id: "kn-IN", label: "Kannada (India)" }, 
+      { id: "ml-IN", label: "Malayalam (India)" }, 
+      { id: "mr-IN", label: "Marathi (India)" }, 
+      { id: "od-IN", label: "Odia (India)" }, 
+      { id: "pa-IN", label: "Punjabi (India)" }, 
+      { id: "ta-IN", label: "Tamil (India)" }, 
+      { id: "te-IN", label: "Telugu (India)" }, 
+      { id: "gu-IN", label: "Gujarati (India)" }, 
+    ]
+
   const form = useForm<z.infer<typeof CourseFormSchema>>({
     resolver: zodResolver(CourseFormSchema),
-    defaultValues: course || {},
+    defaultValues: course || {
+      languages: ["en-IN"],
+    },
     disabled: loading
   })
 
@@ -185,6 +205,50 @@ export default function CourseForm({ loading, course, submit }: Props) {
                           ))}
                         </SelectContent>
                       </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {/* Languages */}
+                <FormField
+                  control={form.control}
+                  name="languages"
+                  render={() => (
+                    <FormItem>
+                      <div className="mb-4">
+                        <FormLabel className="text-base">Languages</FormLabel>
+                      </div>
+                      {languages.map((lang) => (
+                        <FormField
+                          key={lang.id}
+                          control={form.control}
+                          name="languages"
+                          render={({ field }) => {
+                            return (
+                              <FormItem key={lang.id} className="flex flex-row items-start space-x-3 space-y-0">
+                                <FormControl>
+                                  <Checkbox
+                                    disabled={lang.disabled || loading}
+                                    checked={field.value?.includes(lang.id)}
+                                    onCheckedChange={(checked) => {
+                                      return checked
+                                        ? field.onChange([...field.value, lang.id])
+                                        : field.onChange(
+                                          field.value?.filter(
+                                            (value) => value !== lang.id
+                                          )
+                                        )
+                                    }}
+                                  />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                  {lang.label}
+                                </FormLabel>
+                              </FormItem>
+                            )
+                          }}
+                        />
+                      ))}
                       <FormMessage />
                     </FormItem>
                   )}

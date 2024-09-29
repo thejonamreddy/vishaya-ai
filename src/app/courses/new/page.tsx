@@ -2,7 +2,6 @@
 
 import { z } from "zod";
 import CourseForm, { CourseFormSchema } from "./form";
-import { Course } from "@/app/interfaces/course";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -34,7 +33,7 @@ export default function NewCourse() {
     <div className="container mx-auto">
       <div className="max-w-[500px] mx-auto flex flex-col gap-4">
         <h1 className="text-xl font-semibold">New Course</h1>
-        <CourseForm loading={loading} course={{} as Course} submit={onSubmit} />
+        <CourseForm loading={loading} submit={onSubmit} />
       </div>
     </div>
   );
