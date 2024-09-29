@@ -2,9 +2,7 @@ interface SubTopic {
   key: string,
   subTopic: string,
   description: string,
-  /* Custom Properties */
-  selected?: boolean,
-  generated?: boolean
+  selected: boolean
 }
 
 export interface Topic {
@@ -12,7 +10,5 @@ export interface Topic {
   topic: string,
   description: string,
   subTopics: SubTopic[],
-  /* Custom Properties */
-  selected?: boolean,
-  generated?: boolean
+  selected: boolean
 }
