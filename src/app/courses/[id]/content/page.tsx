@@ -1,12 +1,11 @@
 'use client'
 
-import { Audio } from "@/app/interfaces/audio";
 import { Course } from "@/app/interfaces/course";
 import { Topic } from "@/app/interfaces/topic";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Check, ChevronLeft, ChevronRight, CircleDashed, LoaderCircle, MoveRight } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -23,8 +22,10 @@ export default function ContentGeneration({ params }: { params: { id: string } }
       const coursePromise = fetch(`/api/course?id=${params.id}`)
       const outlinePromise = fetch(`/api/course/${params.id}/outline`)
       const response = await Promise.all([coursePromise, outlinePromise])
+
       const courseData = await response[0].json() as Course
       const topicsData = await response[1].json() as Topic[]
+      
       setCourse(courseData)
       setTopics(topicsData)
     } catch (error) {
