@@ -14,11 +14,14 @@ export async function GET(req: NextRequest) {
     .select()
     .eq('id', id)
 
+  const course = data![0]
+  course.languages = course.languages.split(',')
+
   return NextResponse.json(data![0], { status: 200 });
 }
 
 export async function POST(req: NextRequest) {
-  const { title, description, targetAudience, learningObjectives, level, duration } = await req.json() as Course
+  const { title, description, targetAudience, learningObjectives, level, duration, languages } = await req.json() as Course
 
   const { data, error } = await supabase
     .from('courses')
@@ -28,7 +31,9 @@ export async function POST(req: NextRequest) {
       targetAudience,
       learningObjectives,
       level, 
-      duration
+      duration,
+      status: 'draft',
+      languages: languages.join(',')
     })
     .select()
 
