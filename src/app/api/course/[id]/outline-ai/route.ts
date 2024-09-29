@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { createClient } from "@supabase/supabase-js";
-import { Topic } from "@/app/interfaces/topic";
 
 const schema = {
   type: SchemaType.ARRAY,
