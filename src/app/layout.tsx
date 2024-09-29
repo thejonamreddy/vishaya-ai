@@ -3,9 +3,9 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Link from "next/link"
 import {
-  Home,
+  BookAudio,
   Package2,
-  ShoppingCart,
+  SquarePlus,
 } from "lucide-react"
 
 const geistSans = localFont({
@@ -44,13 +44,13 @@ export default function RootLayout({
               </div>
               <div className="flex-1">
                 <nav className="grid items-start px-3 text-sm font-medium">
-                  <Link href="/" className="flex items-center gap-3 rounded-lg px-2 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted">
-                    <Home className="h-4 w-4" />
-                    Courses
+                  <Link href="/courses/new" className="flex items-center gap-3 rounded-lg px-2 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted">
+                    <SquarePlus className="h-4 w-4" />
+                    New Course
                   </Link>
-                  <Link href="/" className="flex items-center gap-3 rounded-lg px-2 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted">
-                    <ShoppingCart className="h-4 w-4" />
-                    Settings
+                  <Link href="/courses" className="flex items-center gap-3 rounded-lg px-2 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted">
+                    <BookAudio className="h-4 w-4" />
+                    Courses
                   </Link>
                 </nav>
               </div>
