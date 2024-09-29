@@ -4,21 +4,34 @@ import { Topic } from "@/app/interfaces/topic"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { LoaderCircle } from "lucide-react"
+import { ChevronLeft, LoaderCircle } from "lucide-react"
 import { useEffect, useState } from "react"
 import Topics from "./topics"
+import { useRouter } from "next/navigation"
+import { Course } from "@/app/interfaces/course"
 
 export default function OutlineRefinement({ params }: { params: { id: string } }) {
+  const router = useRouter()
+
   const [loading, setLoading] = useState(true)
+  const [loadingMessage, setLoadingMessage] = useState('Fetching Course')
+  const [course, setCourse] = useState<Course>()
   const [topics, setTopics] = useState<Topic[]>([])
 
-  async function loadData(id: string) {
+  async function loadData() {
     try {
       setLoading(true)
-      const outlinePromise = fetch(`/api/course/${id}/outline`)
-      const response = await Promise.all([outlinePromise])
-      const topicsData = await response[0].json() as Topic[]
-      setTopics(topicsData)
+      const courseResponse = await fetch(`/api/course?id=${params.id}`)
+      const course = await courseResponse.json() as Course
+      setCourse(course)
+
+      const isDraft = (course.status === 'draft')
+      setLoadingMessage(isDraft ? 'Generating Outline' : 'Fetching Outline')
+
+      const outlineResponse = await fetch(isDraft ? `/api/course/${params.id}/outline-ai` : `/api/course/${params.id}/outline`)
+      const topics = await outlineResponse.json() as Topic[]
+      setCourse(course)
+      setTopics(topics)
     } catch (error) {
 
     } finally {
@@ -28,7 +41,7 @@ export default function OutlineRefinement({ params }: { params: { id: string } }
 
   useEffect(() => {
     if (params.id) {
-      loadData(params.id)
+      loadData()
     }
   }, [params.id])
 
@@ -60,7 +73,7 @@ export default function OutlineRefinement({ params }: { params: { id: string } }
     try {
       setLoading(true)
       setTopics([])
-      await loadData(params.id)
+      await loadData()
     } catch(error) {
 
     } finally {
@@ -79,6 +92,7 @@ export default function OutlineRefinement({ params }: { params: { id: string } }
         body: JSON.stringify(topics)
       })
       const result = await response.json()
+      router.push(`/courses/${params.id}/content`)
     } catch(error) {
 
     } finally {
@@ -89,7 +103,12 @@ export default function OutlineRefinement({ params }: { params: { id: string } }
   return (
     <div className="container mx-auto">
       <div className="max-w-[600px] mx-auto flex flex-col gap-4">
-        <h1 className="text-xl font-semibold">Outline Creation & Refinement</h1>
+        <div className="flex gap-4 items-center">
+          <Button variant="outline" size="icon" className="h-7 w-7">
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <h1 className="text-xl font-semibold">Outline Creation & Refinement</h1>
+        </div>
         <Card>
           <CardContent className="pt-6">
             <div className="grid gap-6">
@@ -97,7 +116,7 @@ export default function OutlineRefinement({ params }: { params: { id: string } }
               {loading && !topics.length && (
                 <div className="flex gap-4 items-center">
                   <LoaderCircle className="h-6 w-6 animate-spin" />
-                  <Label className="text-muted-foreground">Generating Outline</Label>
+                  <Label className="text-muted-foreground">{loadingMessage}</Label>
                 </div>
               )}
               {/* Topics & Sub Topics Selection */}
