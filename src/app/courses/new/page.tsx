@@ -10,7 +10,7 @@ import { LoaderCircle } from "lucide-react";
 export default function NewCourse() {
   const router = useRouter()
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [languages, setLanguages] = useState<Language[]>([])
 
   async function loadData() {

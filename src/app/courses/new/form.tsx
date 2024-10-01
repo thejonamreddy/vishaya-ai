@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form"
 import { useForm } from "react-hook-form";
 import { Course } from "@/app/interfaces/course";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, Save } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Language } from "@/app/interfaces/language";
 
@@ -237,7 +237,8 @@ export default function CourseForm({ loading, languages, course, submit }: Props
               </FormItem>
             )}
           />
-          <Button className="w-full flex items-center gap-4" type="submit" disabled={loading}>
+          <Button className="flex items-center gap-4" type="submit" disabled={loading}>
+            {!loading && <Save className="h-4 w-4" />}
             {loading && <LoaderCircle className="h-4 w-4 animate-spin" />}
             Save
           </Button>
