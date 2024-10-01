@@ -6,8 +6,9 @@ import { LoaderCircle } from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Language } from "../interfaces/language"
+import Link from "next/link"
 
-export default function Home() {
+export default function Courses() {
   const [loading, setLoading] = useState(true)
   const [languages, setLanguages] = useState<Language[]>([])
   const [courses, setCourses] = useState<Course[]>([])
@@ -52,9 +53,13 @@ export default function Home() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {courses.map(({ title, description, targetAudience, learningObjectives, level, duration, ...c }, i) => (
+              {courses.map(({ id, title, description, targetAudience, learningObjectives, level, duration, ...c }, i) => (
                 <TableRow key={i}>
-                  <TableCell>{title}</TableCell>
+                  <TableCell>
+                    <Link href={`/courses/${id}/topics`} className="text-muted-foreground underline">
+                      {title}
+                    </Link>
+                  </TableCell>
                   <TableCell>{description}</TableCell>
                   <TableCell>{targetAudience}</TableCell>
                   <TableCell>{learningObjectives}</TableCell>
