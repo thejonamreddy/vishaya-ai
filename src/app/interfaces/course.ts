@@ -1,4 +1,9 @@
+import { CourseLanguage } from "./course-language";
+
 export interface Course {
+  id: string,
+  createdAt: string,
+  updatedAt: string,
   title: string,
   description: string,
   targetAudience: string,
@@ -6,5 +11,5 @@ export interface Course {
   level: string,
   duration: string,
   status: string,
-  languages: string[]
+  languages: CourseLanguage[]
 }
