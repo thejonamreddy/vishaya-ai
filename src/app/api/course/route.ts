@@ -9,33 +9,44 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams
   const id = searchParams.get('id')
-  const { data, error } = await supabase
+
+  const promise = supabase
     .from('courses')
-    .select()
-    .eq('id', id)
+    .select('*, languages:course-languages(*)')
 
-  const course = data![0]
-  course.languages = course.languages.split(',')
+  if (id) {
+    promise.eq('id', id).single()
+  }
 
-  return NextResponse.json(data![0], { status: 200 });
+  const { data, error } = await promise
+
+  return NextResponse.json(data, { status: 200 });
 }
 
 export async function POST(req: NextRequest) {
   const { title, description, targetAudience, learningObjectives, level, duration, languages } = await req.json() as Course
 
-  const { data, error } = await supabase
+  const { data: course } = await supabase
     .from('courses')
     .insert({
       title,
       description,
       targetAudience,
       learningObjectives,
-      level, 
+      level,
       duration,
-      status: 'draft',
-      languages: languages.join(',')
+      status: 'draft'
     })
-    .select()
+    .select('id')
+    .single()
 
-  return NextResponse.json(data![0], { status: 200 });
+  const { } = await supabase
+    .from('course-languages')
+    .insert(languages.map((lang) => ({
+      courseId: course?.id,
+      languageId: lang.id
+    })))
+
+
+  return NextResponse.json(course, { status: 200 });
 }
