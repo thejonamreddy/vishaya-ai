@@ -34,7 +34,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div className="min-h-screen w-full grid grid-cols-[280px_1fr]">
           {/* Left */}
-          <div className="bg-muted/40 border-r">
+          <div className="border-r">
             <div className="h-full max-h-screen flex flex-col gap-2">
               <div className="h-[60px] border-b p-4">
                 <Link href="/" className="flex gap-2 font-semibold">
@@ -58,10 +58,12 @@ export default function RootLayout({
           </div>
           {/* Right */}
           <div className="flex flex-col">
-            <header className="h-[60px] border-b bg-muted/40">
+            <header className="h-[60px] border-b">
             </header>
-            <main className="flex flex-1 flex-col gap-4 p-4">
-              {children}
+            <main className="flex flex-1 flex-col gap-4 p-4 bg-muted">
+              <div className="h-full container mx-auto">
+                {children}
+              </div>
             </main>
           </div>
         </div>
