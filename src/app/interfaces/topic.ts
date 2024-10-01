@@ -1,19 +1,10 @@
-import { Audio } from "./audio"
-
-interface SubTopic {
-  id: string, 
-  key: string,
-  subTopic: string,
-  description: string,
-  selected: boolean
-}
-
 export interface Topic {
   id: string, 
-  key: string,
-  topic: string,
+  createdAt: string,
+  updatedAt: string,
+  title: string,
   description: string,
-  subTopics: SubTopic[],
   selected: boolean,
-  audios: Audio[]
+  courseId: string,
+  parentId: string
 }

@@ -11,5 +11,6 @@ export interface Course {
   level: string,
   duration: string,
   status: string,
+  /* Navigation Properties */
   languages: CourseLanguage[]
 }
