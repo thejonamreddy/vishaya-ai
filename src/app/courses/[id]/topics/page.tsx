@@ -8,6 +8,7 @@ import { Course } from "@/app/interfaces/course"
 import { TopicModel } from "@/app/models/topic"
 import TopicSelection from "./topic-selection"
 import { Button } from "@/components/ui/button"
+import { listToTree } from "@/app/utils/topic.util"
 
 export default function Topics({ params }: { params: { id: string } }) {
   const router = useRouter()
@@ -16,25 +17,6 @@ export default function Topics({ params }: { params: { id: string } }) {
   const [course, setCourse] = useState<Course>()
   const [aiGenerated, setAIGenerated] = useState(false)
   const [topics, setTopics] = useState<TopicModel[]>([])
-
-  function listToTree(data: Topic[]): TopicModel[] {
-    const map: { [id: string]: TopicModel } = {}
-    const tree = [] as TopicModel[]
-
-    data.forEach(({ id, title, description, selected }) => {
-      map[id] = { title, description, selected, children: [] }
-    })
-
-    data.forEach(item => {
-      if (item.parentId) {
-        map[item.parentId].children.push(map[item.id])
-      } else {
-        tree.push(map[item.id])
-      }
-    })
-
-    return tree
-  }
 
   async function loadData() {
     try {

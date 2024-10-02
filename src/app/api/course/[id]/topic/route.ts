@@ -39,7 +39,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       .single()
 
     if (data) {
-      for (const child of topics) {
+      for (const child of topic.children) {
         const { title, description, selected } = child
         const { } = await supabase
           .from('course-topics')
