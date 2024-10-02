@@ -32,7 +32,7 @@ export function Stepper({ step, courseId }: Props) {
   return (
     <div className="flex items-center gap-4 bg-white p-4 border rounded-md">
       {steps.map((s, i) => (
-          <Link href={s.url}>
+          <Link key={i} href={s.url}>
           <div className="flex items-center gap-4">
             <span className={`text-xs h-6 w-6 rounded-full border bg-muted flex items-center justify-center ${isActive(i) && 'bg-black/75 text-white'}`}>{i + 1}</span>
             <p className={`text-sm text-muted-foreground ${isActive(i) && 'font-semibold text-black'}`}>{s.name}</p>

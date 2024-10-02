@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     promise.eq('id', id).single()
   }
 
-  const { data, error } = await promise
+  const { data } = await promise
 
   return NextResponse.json(data, { status: 200 });
 }

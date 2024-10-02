@@ -39,7 +39,7 @@ interface Props {
   submit(formData: z.infer<typeof CourseFormSchema>): void
 }
 
-export default function CourseForm({ loading, languages, course, submit }: Props) {
+export default function CourseForm({ loading, languages, submit }: Props) {
   const targetAudiences = [
     'Business Professionals',
     'IT Professionals',
@@ -68,7 +68,7 @@ export default function CourseForm({ loading, languages, course, submit }: Props
 
   const form = useForm<z.infer<typeof CourseFormSchema>>({
     resolver: zodResolver(CourseFormSchema),
-    defaultValues: course || {
+    defaultValues: {
       languages: [languages.find((l) => l.code === 'en-IN')?.id],
     },
     disabled: loading

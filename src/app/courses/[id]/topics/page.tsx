@@ -16,7 +16,6 @@ export default function Topics({ params }: { params: { id: string } }) {
 
   const [loading, setLoading] = useState(true)
   const [course, setCourse] = useState<Course>()
-  const [aiGenerated, setAIGenerated] = useState(false)
   const [topics, setTopics] = useState<TopicModel[]>([])
 
   async function loadData() {
@@ -30,11 +29,9 @@ export default function Topics({ params }: { params: { id: string } }) {
       const topicsData = await topicsResponse.json() as Topic[]
 
       if (topicsData.length) {
-        setAIGenerated(false)
         const topicModels = listToTree(topicsData)
         setTopics(topicModels)
       } else {
-        setAIGenerated(true)
         const aiTopicsResponse = await fetch(`/api/topic-ai`, {
           method: 'POST',
           headers: {

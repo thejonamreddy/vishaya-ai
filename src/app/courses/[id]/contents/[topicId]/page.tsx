@@ -56,7 +56,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
       setLanguages(languagesData)
       setCourse(courseData)
       setTopic(topicData)
-    } catch (error) {
+    } catch {
 
     } finally {
       setLoading(false)
@@ -244,7 +244,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
     <div className="flex flex-col gap-4 mt-4">
       {EnglishLanguage}
       {defaultLockAudioTranscript && course?.languages.filter((course) => course.languageId !== defaultLanguageId).map(({ languageId }) => (
-        <div>{GenericLanguage(languageId)}</div>
+        <div key={languageId}>{GenericLanguage(languageId)}</div>
       ))}
     </div>
   )

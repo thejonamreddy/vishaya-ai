@@ -9,7 +9,6 @@ import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { LoaderCircle, Pause, Play } from "lucide-react"
-import { useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { Language } from "@/app/interfaces/language"
@@ -17,8 +16,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Stepper } from "@/components/custom/stepper"
 
 export default function CoursePreview({ params }: { params: { id: string } }) {
-  const router = useRouter()
-
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const [loading, setLoading] = useState(true)
@@ -75,12 +72,12 @@ export default function CoursePreview({ params }: { params: { id: string } }) {
   function secondsToHMS(seconds: number) {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
+    // const secs = seconds % 60;
 
     // Adding leading zeros if needed
     const formattedHours = String(hours).padStart(2, '0');
     const formattedMinutes = String(minutes).padStart(2, '0');
-    const formattedSeconds = String(secs).padStart(2, '0');
+    // const formattedSeconds = String(secs).padStart(2, '0');
 
     return `${formattedHours}:${formattedMinutes}`;
   }
@@ -192,7 +189,7 @@ export default function CoursePreview({ params }: { params: { id: string } }) {
                   </SelectTrigger>
                   <SelectContent>
                     {course?.languages.map((c) => (
-                      <SelectItem value={c.languageId}>{languages.find((lang) => lang.id === c.languageId)?.name}</SelectItem>
+                      <SelectItem key={c.languageId} value={c.languageId}>{languages.find((lang) => lang.id === c.languageId)?.name}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

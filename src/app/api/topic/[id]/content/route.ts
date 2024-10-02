@@ -7,7 +7,7 @@ const supabaseKey = process.env.SUPABASE_KEY || ""
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from('topic-contents')
     .select()
     .eq('topicId', params.id)
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 export async function POST(req: NextRequest,  { params }: { params: { id: string } }) {
   const audios = await req.json() as TopicContent[]
 
-  const { data, error } = await supabase
+  const { } = await supabase
     .from('topic-contents')
     .insert(audios.map(({ languageId, transcript, wav, duration, courseId  }) => ({
       topicId: params.id,
