@@ -50,6 +50,10 @@ export default function ContentGeneration({ params }: { params: { id: string } }
     }
   }, [])
 
+  function preview() {
+    router.push(`/courses/${params.id}/preview`)
+  }
+
   return (
     <div className="flex flex-col gap-4">
       {loading && !course && !topics.length && !contents.length ? (
@@ -58,7 +62,7 @@ export default function ContentGeneration({ params }: { params: { id: string } }
         <div className="flex flex-col gap-4">
           <TopicCompletion loading={loading} topics={topics} contents={contents} courseId={params.id} />
           <div>
-            <Button disabled={loading} className="flex gap-4 items-center">
+            <Button disabled={loading} className="flex gap-4 items-center" onClick={preview}>
               {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Binoculars className="h-4 w-4" /> }
               Preview
             </Button>
