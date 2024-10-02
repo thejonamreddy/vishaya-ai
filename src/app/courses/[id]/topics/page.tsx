@@ -60,7 +60,7 @@ export default function Topics({ params }: { params: { id: string } }) {
 
   function checkForSelected(nodes: TopicModel[]) {
     nodes.forEach((topic) => {
-      if (topic.children) {
+      if (topic.children?.length) {
         topic.selected = topic.children?.some((t) => t.selected)
         checkForSelected(topic.children)
       }
