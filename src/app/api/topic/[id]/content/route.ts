@@ -20,12 +20,13 @@ export async function POST(req: NextRequest,  { params }: { params: { id: string
 
   const { data, error } = await supabase
     .from('topic-contents')
-    .insert(audios.map(({ languageId, transcript, wav, duration  }) => ({
+    .insert(audios.map(({ languageId, transcript, wav, duration, courseId  }) => ({
       topicId: params.id,
       languageId,
       transcript,
       wav,
-      duration
+      duration,
+      courseId
     })))
     .select()
 

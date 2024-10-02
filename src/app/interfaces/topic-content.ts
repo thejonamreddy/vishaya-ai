@@ -3,5 +3,6 @@ export interface TopicContent {
   transcript: string,
   wav: string,
   duration: number,
-  languageId: string
+  languageId: string,
+  courseId: string
 }

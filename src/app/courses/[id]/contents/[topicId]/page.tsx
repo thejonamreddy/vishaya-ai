@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
-import { LoaderCircle } from "lucide-react"
+import { LoaderCircle, Pencil, Save, WandSparkles } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { SyntheticEvent, useEffect, useState } from "react"
 import { Course } from "@/app/interfaces/course"
@@ -149,7 +149,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
   async function save() {
     try {
       setLoading(true)
-      const { } = await fetch(`/api/topic/${params.topicId}/contents`, {
+      const { } = await fetch(`/api/topic/${params.topicId}/content`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -158,7 +158,8 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
           transcript: audioTranscript[languageId],
           wav: audioBase64[languageId],
           languageId: languageId,
-          duration: audioDuration[languageId]
+          duration: audioDuration[languageId],
+          courseId: params.id
         }))),
       })
       router.push(`/courses/${params.id}/contents`)
@@ -180,19 +181,25 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
       {defaultLockAudioTranscript && (
         <div className="flex gap-4 items-center">
           <Button disabled={loading} variant="outline" onClick={() => generateAudio(defaultLanguageId)} className="flex gap-4 items-center">
-            {loading && <LoaderCircle className="h-4 w-4 animate-spin" />}
+            {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <WandSparkles className="h-4 w-4" /> }
             Generate Audio
           </Button>
-          <Button disabled={loading} onClick={() => saveAudioTranscript(defaultLanguageId, false)}>Edit</Button>
+          <Button disabled={loading} onClick={() => saveAudioTranscript(defaultLanguageId, false)} className="flex gap-4 items-center">
+            <Pencil className="h-4 w-4" />
+            Edit
+          </Button>
         </div>
       )}
       {!defaultLockAudioTranscript && (
         <div className="flex gap-4 items-center">
           <Button variant="outline" disabled={loading} className="flex items-center gap-4" onClick={() => generateAudioTranscript(defaultLanguageId)}>
-            {loading && <LoaderCircle className="h-4 w-4 animate-spin" />}
+            {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <WandSparkles className="h-4 w-4" /> }
             Generate Audio Transcript
           </Button>
-          <Button disabled={loading || !defaultAudioTranscript} onClick={() => saveAudioTranscript(defaultLanguageId, true)}>Save</Button>
+          <Button disabled={loading || !defaultAudioTranscript} onClick={() => saveAudioTranscript(defaultLanguageId, true)} className="flex gap-4 items-center">
+            <Save className="h-4 w-4" />
+            Save
+          </Button>
         </div>
       )}
     </div>
@@ -207,10 +214,13 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
         {lockAudioTranscript[id] && (
           <div className="flex gap-4 items-center">
             <Button disabled={loading} variant="outline" onClick={() => generateAudio(id)} className="flex gap-4 items-center">
-              {loading && <LoaderCircle className="h-4 w-4 animate-spin" />}
+              {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <WandSparkles className="h-4 w-4" /> }
               Generate Audio
             </Button>
-            <Button disabled={loading} onClick={() => saveAudioTranscript(id, false)}>Edit</Button>
+            <Button disabled={loading} onClick={() => saveAudioTranscript(id, false)} className="flex gap-4 items-center">
+              <Pencil className="h-4 w-4" />
+              Edit
+            </Button>
           </div>
         )}
         {!lockAudioTranscript[id] && (
@@ -219,7 +229,10 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
               {loading && <LoaderCircle className="h-4 w-4 animate-spin" />}
               Translate Audio Transcript
             </Button>
-            <Button disabled={loading || !audioTranscript[id]} onClick={() => saveAudioTranscript(id, true)}>Save</Button>
+            <Button disabled={loading || !audioTranscript[id]} onClick={() => saveAudioTranscript(id, true)} className="flex gap-4 items-center">
+              <Save className="h-4 w-4" />
+              Save
+            </Button>
           </div>
         )}
       </div>
@@ -268,7 +281,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
           {ContentTabs}
           <div>
             <Button disabled={loading} className="flex gap-4 items-center" onClick={save}>
-              {loading && <LoaderCircle className="h-4 w-4 animate-spin" />}
+              {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" /> }
               Save
             </Button>
           </div>
