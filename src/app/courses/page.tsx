@@ -33,6 +33,12 @@ export default function Courses() {
     loadData()
   }, [])
 
+  function Status(status: string) {
+    if (status === 'draft') {
+      return <span className="text-orange-500">Draft</span>
+    }
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Courses</h1>
@@ -49,11 +55,12 @@ export default function Courses() {
                 <TableHead>Learning Objectives</TableHead>
                 <TableHead>Level</TableHead>
                 <TableHead>Duration</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead>Languages</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {courses.map(({ id, title, description, targetAudience, learningObjectives, level, duration, ...c }, i) => (
+              {courses.map(({ id, title, description, targetAudience, learningObjectives, level, duration, status, ...c }, i) => (
                 <TableRow key={i}>
                   <TableCell>
                     <Link href={`/courses/${id}/topics`} className="text-muted-foreground underline">
@@ -65,6 +72,7 @@ export default function Courses() {
                   <TableCell>{learningObjectives}</TableCell>
                   <TableCell>{level}</TableCell>
                   <TableCell>{duration}</TableCell>
+                  <TableCell>{Status(status)}</TableCell>
                   <TableCell>
                     <div className="flex gap-4">
                       {c.languages.map(({ languageId }, j) => (
