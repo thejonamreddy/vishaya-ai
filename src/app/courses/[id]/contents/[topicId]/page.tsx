@@ -11,6 +11,7 @@ import { SyntheticEvent, useEffect, useState } from "react"
 import { Course } from "@/app/interfaces/course"
 import { Language } from "@/app/interfaces/language"
 import { getAudioUrl } from "@/app/utils/topic.util"
+import { Stepper } from "@/components/custom/stepper"
 
 export default function TopicContentGeneration({ params }: { params: { id: string, topicId: string } }) {
   const router = useRouter()
@@ -274,6 +275,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
         <LoaderCircle className="h-6 w-6 animate-spin" />
       ) : (
         <div className="flex flex-col gap-4">
+          <Stepper step={3} courseId={params.id} />
           <div className="flex flex-col gap-2 bg-white p-4 border rounded-md">
             <Label>{topic?.title}</Label>
             <p className="text-sm text-muted-foreground">{topic?.description}</p>

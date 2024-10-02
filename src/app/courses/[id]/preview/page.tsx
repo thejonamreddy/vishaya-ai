@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { Language } from "@/app/interfaces/language"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Stepper } from "@/components/custom/stepper"
 
 export default function CoursePreview({ params }: { params: { id: string } }) {
   const router = useRouter()
@@ -163,40 +164,43 @@ export default function CoursePreview({ params }: { params: { id: string } }) {
       {loading && !course && !topics.length ? (
         <LoaderCircle className="h-6 w-6 animate-spin" />
       ) : (
-        <div className="grid grid-cols-[1fr_480px] gap-4">
-          <div className="flex flex-col gap-4">
-            <AspectRatio ratio={16 / 9} className="bg-muted">
-              <Image
-                src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
-                alt="Photo by Drew Beamer"
-                fill
-                className="h-full w-full rounded-md object-cover"
-              />
-            </AspectRatio>
-            <div className="bg-white border rounded-md p-2">
-              <audio controls className="w-full" ref={audioRef} src={audioUrl} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} />
+        <div className="flex flex-col gap-4">
+          <Stepper step={4} courseId={params.id} />
+          <div className="grid grid-cols-[1fr_480px] gap-4">
+            <div className="flex flex-col gap-4">
+              <AspectRatio ratio={16 / 9} className="bg-muted">
+                <Image
+                  src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+                  alt="Photo by Drew Beamer"
+                  fill
+                  className="h-full w-full rounded-md object-cover"
+                />
+              </AspectRatio>
+              <div className="bg-white border rounded-md p-2">
+                <audio controls className="w-full" ref={audioRef} src={audioUrl} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label>{course?.title}</Label>
+                <p className="text-sm text-muted-foreground">{course?.description}</p>
+              </div>
             </div>
-            <div className="flex flex-col gap-2">
-              <Label>{course?.title}</Label>
-              <p className="text-sm text-muted-foreground">{course?.description}</p>
+            <div className="flex flex-col gap-4">
+              <div className="bg-white">
+                <Select value={selectedLanguage} onValueChange={onLanguageChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Language" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {course?.languages.map((c) => (
+                      <SelectItem value={c.languageId}>{languages.find((lang) => lang.id === c.languageId)?.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              {topics.filter((topic) => topic.selected).map((topic, i) => (
+                <div key={i}>{Topic(topic)}</div>
+              ))}
             </div>
-          </div>
-          <div className="flex flex-col gap-4">
-            <div className="bg-white">
-              <Select value={selectedLanguage} onValueChange={onLanguageChange}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select Language" />
-                </SelectTrigger>
-                <SelectContent>
-                  {course?.languages.map((c) => (
-                    <SelectItem value={c.languageId}>{languages.find((lang) => lang.id === c.languageId)?.name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            {topics.filter((topic) => topic.selected).map((topic, i) => (
-              <div key={i}>{Topic(topic)}</div>
-            ))}
           </div>
         </div>
       )}

@@ -9,6 +9,7 @@ import { TopicModel } from "@/app/models/topic"
 import TopicSelection from "./topic-selection"
 import { Button } from "@/components/ui/button"
 import { listToTree } from "@/app/utils/topic.util"
+import { Stepper } from "@/components/custom/stepper"
 
 export default function Topics({ params }: { params: { id: string } }) {
   const router = useRouter()
@@ -117,6 +118,7 @@ export default function Topics({ params }: { params: { id: string } }) {
         <LoaderCircle className="h-6 w-6 animate-spin" />
       ) : (
         <div className="flex flex-col gap-4">
+          <Stepper step={2} courseId={params.id} />
           <TopicSelection loading={loading} topics={topics} topicToggle={onTopicToggle} />
           <div className="flex gap-4">
             <Button variant="outline" className="flex items-center gap-4" disabled={loading} onClick={generateTopics}>

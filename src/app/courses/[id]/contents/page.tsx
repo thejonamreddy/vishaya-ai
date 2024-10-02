@@ -10,6 +10,7 @@ import { TopicModel } from "@/app/models/topic";
 import { listToTree } from "@/app/utils/topic.util";
 import { TopicContent } from "@/app/interfaces/topic-content";
 import { Button } from "@/components/ui/button";
+import { Stepper } from "@/components/custom/stepper";
 
 export default function ContentGeneration({ params }: { params: { id: string } }) {
   const router = useRouter()
@@ -60,6 +61,7 @@ export default function ContentGeneration({ params }: { params: { id: string } }
         <LoaderCircle className="h-6 w-6 animate-spin" />
       ) : (
         <div className="flex flex-col gap-4">
+          <Stepper step={3} courseId={params.id} />
           <TopicCompletion loading={loading} topics={topics} contents={contents} courseId={params.id} />
           <div>
             <Button disabled={loading} className="flex gap-4 items-center" onClick={preview}>
