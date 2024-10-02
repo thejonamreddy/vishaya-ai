@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      inputs: splitTextIntoChunks(text),
+      inputs: splitTextIntoChunks(text).slice(0, 3), /* Adding this due to Saravam API limitations */
       target_language_code: language === 'en-IN' ? 'hi-IN' : language,
       enable_preprocessing: true
     })

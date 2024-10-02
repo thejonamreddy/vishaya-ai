@@ -19,3 +19,19 @@ export function listToTree(data: Topic[]): TopicModel[] {
 
   return tree
 }
+
+export function getAudioUrl(base64Wav: string) {
+  const byteCharacters = atob(base64Wav); // Decode Base64 to binary string
+  const byteNumbers = new Array(byteCharacters.length);
+
+  // Convert binary string to byte array
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+
+  const byteArray = new Uint8Array(byteNumbers);
+  const blob = new Blob([byteArray], { type: 'audio/wav' });
+  const url = URL.createObjectURL(blob); // Create Object URL from Blob
+
+  return url
+}

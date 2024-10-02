@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams
   const id = searchParams.get('id')
   const { data, error } = await supabase
-    .from('topics')
+    .from('course-topics')
     .select()
     .eq('id', id)
     .single()
