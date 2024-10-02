@@ -49,7 +49,7 @@ export default function ContentGeneration({ params }: { params: { id: string } }
         <LoaderCircle className="h-6 w-6 animate-spin" />
       ) : (
         <div className="flex flex-col gap-4">
-          <TopicCompletion loading={loading} topics={topics} />
+          <TopicCompletion loading={loading} topics={topics} courseId={params.id} />
         </div>
       )}
     </div>

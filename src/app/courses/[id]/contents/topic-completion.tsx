@@ -10,10 +10,11 @@ import { useState } from "react";
 
 interface Props {
   loading: boolean,
-  topics: TopicModel[]
+  topics: TopicModel[],
+  courseId: string
 }
 
-export default function TopicCompletion({ loading, topics }: Props) {
+export default function TopicCompletion({ loading, topics, courseId }: Props) {
   const router = useRouter()
   
   const [toggleDesc, setToggleDesc] = useState(true)
@@ -29,7 +30,7 @@ export default function TopicCompletion({ loading, topics }: Props) {
           ))}
         </div>
         {!topic.children.length && (
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" onClick={() => redirectToTopic(topic)}>
             <ChevronRight className="h-4 w-4" />
           </Button>
         )}
@@ -38,7 +39,7 @@ export default function TopicCompletion({ loading, topics }: Props) {
   }
 
   function redirectToTopic(topic: TopicModel) {
-    router.push(`topic/${topic.id}`)
+    router.push(`/courses/${courseId}/contents/${topic.id}`)
   }
 
   return (
