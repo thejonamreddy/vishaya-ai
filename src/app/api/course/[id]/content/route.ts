@@ -10,7 +10,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   const excludeWav = searchParams.get('excludeWav') === 'true'
   const { data } = await supabase
     .from('topic-contents')
-    .select(excludeWav ? 'id' : '*')
+    .select(excludeWav ? 'id,createdAt,updatedAt,topicId,transcript,languageId,duration,courseId' : '*')
     .eq('courseId', params.id)
 
   return NextResponse.json(data, { status: 200 });
