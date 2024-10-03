@@ -34,8 +34,8 @@ export function Stepper({ step, courseId }: Props) {
       {steps.map((s, i) => (
           <Link key={i} href={s.url}>
           <div className="flex items-center gap-4">
-            <span className={`text-xs h-6 w-6 rounded-full border bg-muted flex items-center justify-center ${isActive(i) && 'bg-black/75 text-white'}`}>{i + 1}</span>
-            <p className={`text-sm text-muted-foreground ${isActive(i) && 'font-semibold text-black'}`}>{s.name}</p>
+            <span className={`text-xs h-6 w-6 rounded-full border bg-muted flex items-center justify-center ${isActive(i) && 'bg-black text-white'}`}>{i + 1}</span>
+            <p className={`text-sm ${isActive(i) ? 'font-semibold text-black' : 'text-muted-foreground'}`}>{s.name}</p>
             {(i < steps.length - 1) && <div className="h-[2px] w-[24px] bg-muted-foreground/40 rounded-md" />}
           </div>
         </Link>
