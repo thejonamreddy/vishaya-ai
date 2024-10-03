@@ -4,7 +4,6 @@ import "./globals.css";
 import Link from "next/link"
 import {
   BookAudio,
-  Package2,
   SquarePlus,
 } from "lucide-react"
 
@@ -38,7 +37,7 @@ export default function RootLayout({
             <div className="h-full max-h-screen flex flex-col gap-2">
               <div className="h-[60px] border-b p-4">
                 <Link href="/" className="flex gap-2 font-semibold">
-                  <Package2 className="h-6 w-6" />
+                  <BookAudio className="h-6 w-6" />
                   <span className="">Vishaya AI</span>
                 </Link>
               </div>
