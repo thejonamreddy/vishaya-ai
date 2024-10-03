@@ -17,6 +17,7 @@ export default function Topics({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true)
   const [course, setCourse] = useState<Course>()
   const [topics, setTopics] = useState<TopicModel[]>([])
+  const [showError, setShowError] = useState(false)
 
   async function loadData() {
     try {
@@ -56,6 +57,10 @@ export default function Topics({ params }: { params: { id: string } }) {
     }
   }, [])
 
+  useEffect(() => {
+    setShowError(!topics.some((t) => t.selected))
+  }, [topics])
+
   function checkForSelected(nodes: TopicModel[]) {
     nodes.forEach((topic) => {
       if (topic.children?.length) {
@@ -92,8 +97,13 @@ export default function Topics({ params }: { params: { id: string } }) {
     }
   }
 
+  function validate() {
+    return topics.some((t) => t.selected)
+  }
+
   async function save() {
     try {
+      if (!validate()) return
       setLoading(true)
       const { } = await fetch(`/api/course/${params.id}/topic`, {
         method: 'POST',
@@ -117,6 +127,7 @@ export default function Topics({ params }: { params: { id: string } }) {
         <div className="flex flex-col gap-4">
           <Stepper step={2} courseId={params.id} />
           <TopicSelection loading={loading} topics={topics} topicToggle={onTopicToggle} />
+          {showError && <p className="text-[0.8rem] font-medium text-destructive">Please select at least one topic</p>}
           <div className="flex gap-4">
             <Button variant="outline" className="flex items-center gap-4" disabled={loading} onClick={generateTopics}>
               {!loading && <WandSparkles className="h-4 w-4" />}
