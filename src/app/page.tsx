@@ -47,7 +47,7 @@ export default function Home() {
               <div className="w-full max-w-sm space-y-2">
                 <form className="flex space-x-2">
                   <Input className="max-w-lg flex-1" placeholder="Enter a subject for your course" type="text" value={title} onChange={(e) => setTitle(e.currentTarget.value)} />
-                  <Link href={title ? `/courses/new?title=${title}` : '/course/new'}>
+                  <Link href={title ? `/courses/new?title=${title}` : '/courses/new'}>
                     <Button type="submit">Generate Course</Button>
                   </Link>
                 </form>
