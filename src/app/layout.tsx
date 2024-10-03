@@ -1,11 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Link from "next/link"
-import {
-  BookAudio,
-  SquarePlus,
-} from "lucide-react"
 import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = localFont({
