@@ -19,6 +19,7 @@ import { Course } from "@/app/interfaces/course";
 import { LoaderCircle, Save } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Language } from "@/app/interfaces/language";
+import { useSearchParams } from "next/navigation";
 
 export const CourseFormSchema = z.object({
   title: z.string({ required_error: "Title is required" }),
@@ -40,6 +41,9 @@ interface Props {
 }
 
 export default function CourseForm({ loading, languages, submit }: Props) {
+  const searchParams = useSearchParams()
+  const title = searchParams.get('title')
+
   const targetAudiences = [
     'Business Professionals',
     'IT Professionals',
@@ -69,6 +73,7 @@ export default function CourseForm({ loading, languages, submit }: Props) {
   const form = useForm<z.infer<typeof CourseFormSchema>>({
     resolver: zodResolver(CourseFormSchema),
     defaultValues: {
+      title: title || '',
       languages: [languages.find((l) => l.code === 'en-IN')?.id],
     },
     disabled: loading
