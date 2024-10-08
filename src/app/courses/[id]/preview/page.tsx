@@ -162,7 +162,7 @@ export default function CoursePreview({ params }: { params: { id: string } }) {
         <LoaderCircle className="h-6 w-6 animate-spin" />
       ) : (
         <div className="flex flex-col gap-4">
-          <Stepper step={4} courseId={params.id} />
+          <Stepper step={4} course={course as Course} />
           <div className="grid grid-cols-[1fr_480px] gap-4">
             <div className="flex flex-col gap-4">
               <AspectRatio ratio={16 / 9} className="bg-muted">

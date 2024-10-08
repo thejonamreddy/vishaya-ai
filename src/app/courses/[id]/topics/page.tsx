@@ -125,7 +125,7 @@ export default function Topics({ params }: { params: { id: string } }) {
         <LoaderCircle className="h-6 w-6 animate-spin" />
       ) : (
         <div className="flex flex-col gap-4">
-          <Stepper step={2} courseId={params.id} />
+          <Stepper step={2} course={course as Course} />
           <TopicSelection loading={loading} topics={topics} topicToggle={onTopicToggle} />
           {showError && <p className="text-[0.8rem] font-medium text-destructive">Please select at least one topic</p>}
           <div className="flex gap-4">

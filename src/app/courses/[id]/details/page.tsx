@@ -72,7 +72,7 @@ export default function CourseDetail({ params }: { params: { id: string } }) {
         <LoaderCircle className="h-6 w-6 animate-spin" />
       ) : (
         <div className="flex flex-col gap-4">
-          <Stepper step={1} courseId={params.id} />
+          <Stepper step={1} course={course as Course} />
           <div className="max-w-[480px]">
             <CourseForm loading={loading} languages={languages} course={course} submit={onSubmit} />
           </div>

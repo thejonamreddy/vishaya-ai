@@ -275,7 +275,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
         <LoaderCircle className="h-6 w-6 animate-spin" />
       ) : (
         <div className="flex flex-col gap-4">
-          <Stepper step={3} courseId={params.id} />
+          <Stepper step={3} course={course as Course} />
           <div className="flex flex-col gap-2 bg-white p-4 border rounded-md">
             <Label>{topic?.title}</Label>
             <p className="text-sm text-muted-foreground">{topic?.description}</p>
