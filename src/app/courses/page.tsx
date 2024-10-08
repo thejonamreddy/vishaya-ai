@@ -36,6 +36,8 @@ export default function Courses() {
   function Status(status: string) {
     if (status === 'draft') {
       return <span className="text-orange-500">Draft</span>
+    } else if (status === 'brainstorming') {
+      return <span className="text-purple-500">Brainstorming</span>
     }
   }
 
@@ -63,7 +65,7 @@ export default function Courses() {
               {courses.map(({ id, title, description, targetAudience, learningObjectives, level, duration, status, ...c }, i) => (
                 <TableRow key={i}>
                   <TableCell>
-                    <Link href={`/courses/${id}/topics`} className="text-muted-foreground underline">
+                    <Link href={`/courses/${id}/details`} className="text-muted-foreground underline">
                       {title}
                     </Link>
                   </TableCell>
