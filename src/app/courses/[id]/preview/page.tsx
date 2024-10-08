@@ -70,16 +70,16 @@ export default function CoursePreview({ params }: { params: { id: string } }) {
   }, [audioUrl])
 
   function secondsToHMS(seconds: number) {
-    const hours = Math.floor(seconds / 3600);
+    // const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
-    // const secs = seconds % 60;
+    const secs = Math.floor(seconds % 60);
 
     // Adding leading zeros if needed
-    const formattedHours = String(hours).padStart(2, '0');
-    const formattedMinutes = String(minutes).padStart(2, '0');
+    // const formattedHours = String(hours).padStart(2, '0');
+    // const formattedMinutes = String(minutes).padStart(2, '0');
     // const formattedSeconds = String(secs).padStart(2, '0');
 
-    return `${formattedHours}:${formattedMinutes}`;
+    return `${minutes}m ${secs}s`;
   }
 
   function getFormattedDuration(topic: TopicModel) {
@@ -125,6 +125,10 @@ export default function CoursePreview({ params }: { params: { id: string } }) {
     return (topic.id === selectedTopic?.id) && isPlaying
   }
 
+  function hasContent(topic: TopicModel) {
+    return contents?.some((c) => c.topicId === topic.id)
+  }
+
   function Topic(topic: TopicModel) {
     return (
       <div className="flex items-center gap-4 bg-white p-4 border rounded-md">
@@ -148,7 +152,7 @@ export default function CoursePreview({ params }: { params: { id: string } }) {
               <p className="text-sm text-muted-foreground">{getFormattedDuration(topic)}</p>
             )}
           </div>
-          {topic.children?.filter((child) => child.selected).map((child, i) => (
+          {topic.children?.filter((child) => child.selected && hasContent(child)).map((child, i) => (
             <div key={i}>{Topic(child)}</div>
           ))}
         </div>
