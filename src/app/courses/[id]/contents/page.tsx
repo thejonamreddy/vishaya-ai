@@ -19,6 +19,7 @@ export default function ContentGeneration({ params }: { params: { id: string } }
   const [course, setCourse] = useState<Course>()
   const [topics, setTopics] = useState<TopicModel[]>([])
   const [contents, setContents] = useState<TopicContent[]>([])
+  const [showError, setShowError] = useState(false)
 
   async function loadData() {
     try {
@@ -51,7 +52,18 @@ export default function ContentGeneration({ params }: { params: { id: string } }
     }
   }, [])
 
+  useEffect(() => {
+    validate()
+  }, [contents])
+
+  function validate() {
+    const valid = !!contents.length
+    setShowError(!valid)
+    return valid
+  }
+
   function preview() {
+    if (!validate()) return
     router.push(`/courses/${params.id}/preview`)
   }
 
@@ -63,6 +75,7 @@ export default function ContentGeneration({ params }: { params: { id: string } }
         <div className="flex flex-col gap-4">
           <Stepper step={3} course={course as Course} />
           <TopicCompletion loading={loading} topics={topics} contents={contents} courseId={params.id} />
+          {showError && <p className="text-[0.8rem] font-medium text-destructive">Please generate content for at least one topic to preview</p>}
           <div>
             <Button disabled={loading} className="flex gap-4 items-center" onClick={preview}>
               {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Binoculars className="h-4 w-4" /> }
