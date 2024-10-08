@@ -45,7 +45,7 @@ export default function CourseForm({ loading, languages, course, submit }: Props
   const searchParams = useSearchParams()
   const title = searchParams.get('title')
 
-  const isDraft = !course || (course.status === 'draft')
+  const canEdit = !course || (course.status === 'draft')
 
   const targetAudiences = [
     'Business Professionals',
@@ -84,7 +84,7 @@ export default function CourseForm({ loading, languages, course, submit }: Props
       duration: course?.duration || '',
       languages: course?.languages.map((l) => l.languageId) || [languages.find((l) => l.code === 'en-IN')?.id],
     },
-    disabled: loading || !isDraft
+    disabled: loading || !canEdit
   })
 
   function onSubmit(formData: z.infer<typeof CourseFormSchema>) {
@@ -130,7 +130,7 @@ export default function CourseForm({ loading, languages, course, submit }: Props
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-inherit">Target Audience</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading || !isDraft}>
+                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading || !canEdit}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select" />
@@ -167,7 +167,7 @@ export default function CourseForm({ loading, languages, course, submit }: Props
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-inherit">Level</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading || !isDraft}>
+                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading || !canEdit}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select" />
@@ -190,7 +190,7 @@ export default function CourseForm({ loading, languages, course, submit }: Props
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-inherit">Duration</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading || !isDraft}>
+                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading || !canEdit}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select" />
@@ -225,7 +225,7 @@ export default function CourseForm({ loading, languages, course, submit }: Props
                         <FormItem key={id} className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
                             <Checkbox
-                              disabled={loading || code === 'en-IN' || !isDraft}
+                              disabled={loading || code === 'en-IN' || !canEdit}
                               checked={field.value?.includes(id)}
                               onCheckedChange={(checked) => {
                                 return checked
@@ -250,7 +250,7 @@ export default function CourseForm({ loading, languages, course, submit }: Props
               </FormItem>
             )}
           />
-          {isDraft ? (
+          {canEdit ? (
             <Button className="flex items-center gap-4" type="submit" disabled={loading}>
               {!loading && <Save className="h-4 w-4" />}
               {loading && <LoaderCircle className="h-4 w-4 animate-spin" />}

@@ -8,17 +8,18 @@ import { useState } from "react";
 
 interface Props {
   loading: boolean,
+  canEdit: boolean,
   topics: TopicModel[],
   topicToggle(topic: TopicModel, checked: boolean): void
 }
 
-export default function TopicSelection({ loading, topics, topicToggle }: Props) {
+export default function TopicSelection({ loading, canEdit, topics, topicToggle }: Props) {
   const [toggleDesc, setToggleDesc] = useState(true)
 
   function Topic(topic: TopicModel) {
     return (
       <div className="flex items-start gap-4 bg-white p-4 border rounded-md">
-        <Checkbox checked={topic.selected} disabled={loading} onCheckedChange={(e: boolean) => topicToggle(topic, e)} />
+        <Checkbox checked={topic.selected} disabled={loading || !canEdit} onCheckedChange={(e: boolean) => topicToggle(topic, e)} />
         <div className="flex flex-col gap-2 w-full">
           <Label>{topic.title}</Label>
           {toggleDesc && <p className="text-sm text-muted-foreground">{topic.description}</p>}
