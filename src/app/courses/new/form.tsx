@@ -16,10 +16,11 @@ import {
 } from "@/components/ui/form"
 import { useForm } from "react-hook-form";
 import { Course } from "@/app/interfaces/course";
-import { LoaderCircle, Save } from "lucide-react";
+import { ArrowRight, LoaderCircle, Save } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Language } from "@/app/interfaces/language";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export const CourseFormSchema = z.object({
   title: z.string({ required_error: "Title is required" }),
@@ -40,9 +41,11 @@ interface Props {
   submit(formData: z.infer<typeof CourseFormSchema>): void
 }
 
-export default function CourseForm({ loading, languages, submit }: Props) {
+export default function CourseForm({ loading, languages, course, submit }: Props) {
   const searchParams = useSearchParams()
   const title = searchParams.get('title')
+
+  const isDraft = !course || (course.status === 'draft')
 
   const targetAudiences = [
     'Business Professionals',
@@ -73,10 +76,15 @@ export default function CourseForm({ loading, languages, submit }: Props) {
   const form = useForm<z.infer<typeof CourseFormSchema>>({
     resolver: zodResolver(CourseFormSchema),
     defaultValues: {
-      title: title || '',
-      languages: [languages.find((l) => l.code === 'en-IN')?.id],
+      title: course?.title || title || '',
+      description: course?.description || '',
+      targetAudience: course?.targetAudience || '',
+      learningObjectives: course?.learningObjectives || '',
+      level: course?.level || '',
+      duration: course?.duration || '',
+      languages: course?.languages.map((l) => l.languageId) || [languages.find((l) => l.code === 'en-IN')?.id],
     },
-    disabled: loading
+    disabled: loading || !isDraft
   })
 
   function onSubmit(formData: z.infer<typeof CourseFormSchema>) {
@@ -122,7 +130,7 @@ export default function CourseForm({ loading, languages, submit }: Props) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-inherit">Target Audience</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading}>
+                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading || !isDraft}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select" />
@@ -159,7 +167,7 @@ export default function CourseForm({ loading, languages, submit }: Props) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-inherit">Level</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading}>
+                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading || !isDraft}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select" />
@@ -182,7 +190,7 @@ export default function CourseForm({ loading, languages, submit }: Props) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-inherit">Duration</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading}>
+                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading || !isDraft}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select" />
@@ -217,7 +225,7 @@ export default function CourseForm({ loading, languages, submit }: Props) {
                         <FormItem key={id} className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
                             <Checkbox
-                              disabled={loading || code === 'en-IN'}
+                              disabled={loading || code === 'en-IN' || !isDraft}
                               checked={field.value?.includes(id)}
                               onCheckedChange={(checked) => {
                                 return checked
@@ -242,11 +250,20 @@ export default function CourseForm({ loading, languages, submit }: Props) {
               </FormItem>
             )}
           />
-          <Button className="flex items-center gap-4" type="submit" disabled={loading}>
-            {!loading && <Save className="h-4 w-4" />}
-            {loading && <LoaderCircle className="h-4 w-4 animate-spin" />}
-            Save
-          </Button>
+          {isDraft ? (
+            <Button className="flex items-center gap-4" type="submit" disabled={loading}>
+              {!loading && <Save className="h-4 w-4" />}
+              {loading && <LoaderCircle className="h-4 w-4 animate-spin" />}
+              Save
+            </Button>
+          ) : (
+            <Link href={`/courses/${course.id}/topics`} className="w-full">
+              <Button className="flex items-center gap-4 w-full" type="button">
+                <ArrowRight className="h-4 w-4" />
+                Next
+              </Button>
+            </Link>
+          )}
         </div>
       </form>
     </Form>

@@ -54,5 +54,11 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     }
   }
 
+  /* Update Course Status */
+  const { } = await supabase
+    .from('courses')
+    .update({ status: 'brainstorming' })
+    .eq('id', params.id)
+
   return NextResponse.json(null, { status: 200 })
 }

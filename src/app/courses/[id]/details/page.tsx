@@ -1,24 +1,34 @@
 'use client'
 
 import { z } from "zod";
-import CourseForm, { CourseFormSchema } from "./form";
+import CourseForm, { CourseFormSchema } from "../../new/form";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Language } from "@/app/interfaces/language";
 import { LoaderCircle } from "lucide-react";
+import { Course } from "@/app/interfaces/course";
+import { Stepper } from "@/components/custom/stepper";
 
-export default function NewCourse() {
+export default function CourseDetail({ params }: { params: { id: string } }) {
   const router = useRouter()
 
   const [loading, setLoading] = useState(true)
   const [languages, setLanguages] = useState<Language[]>([])
+  const [course, setCourse] = useState<Course>()
 
   async function loadData() {
     try {
       setLoading(true)
-      const response = await fetch('/api/language')
-      const data = await response.json()
-      setLanguages(data)
+      const languagesPromise = fetch('/api/language')
+      const coursePromise = fetch(`/api/course?id=${params.id}`)
+
+      const response = await Promise.all([languagesPromise, coursePromise])
+      
+      const languagesData = await response[0].json() as Language[]
+      const courseData = await response[1].json() as Course
+
+      setLanguages(languagesData)
+      setCourse(courseData)
     } catch {
     } finally {
       setLoading(false)
@@ -33,8 +43,8 @@ export default function NewCourse() {
     try {
       setLoading(true)
       const { title, description, targetAudience, learningObjectives, level, duration } = formData
-      const response = await fetch('/api/course', {
-        method: 'POST',
+      const { } = await fetch(`/api/course/${params.id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -48,8 +58,7 @@ export default function NewCourse() {
           languages: formData.languages.map((l) => ({ languageId: l }))
         })
       })
-      const data = await response.json()
-      router.push(`/courses/${data.id}/topics`)
+      router.push(`/courses/${params.id}/topics`)
     } catch {
 
     } finally {
@@ -58,12 +67,16 @@ export default function NewCourse() {
   }
 
   return (
-    <div className="flex flex-col gap-4 max-w-[480px]">
-      <h1 className="text-xl font-semibold">New Course</h1>
-      {loading && !languages.length ? (
+    <div className="flex flex-col gap-4">
+      {loading && !languages.length && !course ? (
         <LoaderCircle className="h-6 w-6 animate-spin" />
       ) : (
-        <CourseForm loading={loading} languages={languages} submit={onSubmit} />
+        <div className="flex flex-col gap-4">
+          <Stepper step={1} courseId={params.id} />
+          <div className="max-w-[480px]">
+            <CourseForm loading={loading} languages={languages} course={course} submit={onSubmit} />
+          </div>
+        </div>
       )}
     </div>
   );
