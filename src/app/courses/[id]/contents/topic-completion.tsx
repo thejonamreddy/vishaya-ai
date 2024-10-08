@@ -25,14 +25,14 @@ export default function TopicCompletion({ loading, topics, contents, courseId }:
     return contents.some(({ topicId }) => topic.id === topicId)
   }
 
-  function Topic(topic: TopicModel) {
+  function Topic(topic: TopicModel, label: string) {
     return (
       <div className="flex items-center gap-4 bg-white p-4 border rounded-md">
         <div className="flex flex-col gap-2 w-full">
-          <Label>{topic.title}</Label>
+          <Label>{label} {topic.title}</Label>
           {toggleDesc && <p className="text-sm text-muted-foreground">{topic.description}</p>}
           {topic.children?.filter((child) => child.selected).map((child, i) => (
-            <div key={i}>{Topic(child)}</div>
+            <div key={i}>{Topic(child, `${label}${i + 1}.`)}</div>
           ))}
         </div>
         {!topic.children.length && (
@@ -56,7 +56,7 @@ export default function TopicCompletion({ loading, topics, contents, courseId }:
         <Label htmlFor="toggle-desc">Toggle Description</Label>
       </div>
       {topics.filter((topic) => topic.selected).map((topic, i) => (
-        <div key={i}>{Topic(topic)}</div>
+        <div key={i}>{Topic(topic, `${i + 1}.`)}</div>
       ))}
     </div>
   )

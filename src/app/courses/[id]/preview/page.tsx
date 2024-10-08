@@ -129,7 +129,7 @@ export default function CoursePreview({ params }: { params: { id: string } }) {
     return contents?.some((c) => c.topicId === topic.id)
   }
 
-  function Topic(topic: TopicModel) {
+  function Topic(topic: TopicModel, label: string) {
     return (
       <div className="flex items-center gap-4 bg-white p-4 border rounded-md">
         <div className="flex flex-col gap-2 w-full">
@@ -147,13 +147,13 @@ export default function CoursePreview({ params }: { params: { id: string } }) {
                 )}
               </div>
             )}
-            <Label className="flex-1">{topic.title}</Label>
+            <Label className="flex-1">{label} {topic.title}</Label>
             {!topic.children.length && (
               <p className="text-sm text-muted-foreground">{getFormattedDuration(topic)}</p>
             )}
           </div>
-          {topic.children?.filter((child) => child.selected && hasContent(child)).map((child, i) => (
-            <div key={i}>{Topic(child)}</div>
+          {topic.children?.filter((child) => child.selected).map((child, i) => (
+            <div key={i} className={!hasContent(child) ? 'hidden' : ''}>{Topic(child, `${label}${i + 1}.`)}</div>
           ))}
         </div>
       </div>
@@ -199,7 +199,7 @@ export default function CoursePreview({ params }: { params: { id: string } }) {
                 </Select>
               </div>
               {topics.filter((topic) => topic.selected).map((topic, i) => (
-                <div key={i}>{Topic(topic)}</div>
+                <div key={i}>{Topic(topic, `${i + 1}.`)}</div>
               ))}
             </div>
           </div>
