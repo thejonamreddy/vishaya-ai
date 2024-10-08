@@ -171,18 +171,18 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
   }
 
   function onLoadedMetadata(e: SyntheticEvent<HTMLAudioElement, Event>, id: string) {
-    setAudioDuration({...audioDuration, [id]: e.currentTarget.duration })
+    setAudioDuration({ ...audioDuration, [id]: e.currentTarget.duration })
   }
 
   const EnglishLanguage = (
     <div className="flex flex-col gap-4 bg-white p-4 border rounded-md">
       <h2 className="font-semibold">{defaultLanguageName}</h2>
       <Textarea disabled={loading || defaultLockAudioTranscript} value={defaultAudioTranscript} />
-      {defaultAudioUrl && <audio controls={!loading} src={defaultAudioUrl} onLoadedMetadata={(e) => onLoadedMetadata(e, defaultLanguageId) } />}
+      {defaultAudioUrl && <audio controls={!loading} src={defaultAudioUrl} onLoadedMetadata={(e) => onLoadedMetadata(e, defaultLanguageId)} />}
       {defaultLockAudioTranscript && (
         <div className="flex gap-4 items-center">
           <Button disabled={loading} variant="outline" onClick={() => generateAudio(defaultLanguageId)} className="flex gap-4 items-center">
-            {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <WandSparkles className="h-4 w-4" /> }
+            {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <WandSparkles className="h-4 w-4" />}
             Generate Audio
           </Button>
           <Button disabled={loading} onClick={() => saveAudioTranscript(defaultLanguageId, false)} className="flex gap-4 items-center">
@@ -194,7 +194,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
       {!defaultLockAudioTranscript && (
         <div className="flex gap-4 items-center">
           <Button variant="outline" disabled={loading} className="flex items-center gap-4" onClick={() => generateAudioTranscript(defaultLanguageId)}>
-            {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <WandSparkles className="h-4 w-4" /> }
+            {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <WandSparkles className="h-4 w-4" />}
             Generate Audio Transcript
           </Button>
           <Button disabled={loading || !defaultAudioTranscript} onClick={() => saveAudioTranscript(defaultLanguageId, true)} className="flex gap-4 items-center">
@@ -211,11 +211,11 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
       <div className="flex flex-col gap-4 bg-white p-4 border rounded-md">
         <h2 className="font-semibold">{languages.find((lang) => lang.id === id)?.name}</h2>
         <Textarea disabled={loading || lockAudioTranscript[id]} value={audioTranscript[id]} />
-        {audioUrl[id] && <audio controls={!loading} src={audioUrl[id]} onLoadedMetadata={(e) => onLoadedMetadata(e, id) } />}
+        {audioUrl[id] && <audio controls={!loading} src={audioUrl[id]} onLoadedMetadata={(e) => onLoadedMetadata(e, id)} />}
         {lockAudioTranscript[id] && (
           <div className="flex gap-4 items-center">
             <Button disabled={loading} variant="outline" onClick={() => generateAudio(id)} className="flex gap-4 items-center">
-              {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <WandSparkles className="h-4 w-4" /> }
+              {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <WandSparkles className="h-4 w-4" />}
               Generate Audio
             </Button>
             <Button disabled={loading} onClick={() => saveAudioTranscript(id, false)} className="flex gap-4 items-center">
@@ -261,10 +261,19 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
         {AudioTranscriptTab}
       </TabsContent>
       <TabsContent value="content">
+        <div className="flex flex-col gap-4 bg-white p-4 border rounded-md">
+          <Label>Coming Soon . . .</Label>
+        </div>
       </TabsContent>
       <TabsContent value="image">
+        <div className="flex flex-col gap-4 bg-white p-4 border rounded-md">
+          <Label>Coming Soon . . .</Label>
+        </div>
       </TabsContent>
       <TabsContent value="video">
+        <div className="flex flex-col gap-4 bg-white p-4 border rounded-md">
+          <Label>Coming Soon . . .</Label>
+        </div>
       </TabsContent>
     </Tabs>
   )
@@ -283,7 +292,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
           {ContentTabs}
           <div>
             <Button disabled={loading} className="flex gap-4 items-center" onClick={save}>
-              {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" /> }
+              {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
               Save
             </Button>
           </div>
