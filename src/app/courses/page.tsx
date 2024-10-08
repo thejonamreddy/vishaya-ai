@@ -40,6 +40,8 @@ export default function Courses() {
       return <span className="text-purple-500">Brainstorming</span>
     } else if (status === 'prototyping') {
       return <span className="text-blue-500">Prototyping</span>
+    } else if (status === 'ready') {
+      return <span className="text-green-500">Ready</span>
     }
   }
 

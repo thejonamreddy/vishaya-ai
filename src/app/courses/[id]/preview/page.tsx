@@ -83,7 +83,7 @@ export default function CoursePreview({ params }: { params: { id: string } }) {
   }
 
   function getFormattedDuration(topic: TopicModel) {
-    const duration = contents?.find((t) => t.topicId === topic.id)?.duration as number
+    const duration = contents?.find((t) => t.topicId === topic.id && t.languageId === selectedLanguage)?.duration as number
     return secondsToHMS(duration)
   }
 
