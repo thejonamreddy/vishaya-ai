@@ -57,10 +57,6 @@ export default function Topics({ params }: { params: { id: string } }) {
     }
   }, [])
 
-  useEffect(() => {
-    setShowError(!topics.some((t) => t.selected))
-  }, [topics])
-
   function checkForSelected(nodes: TopicModel[]) {
     nodes.forEach((topic) => {
       if (topic.children?.length) {
@@ -97,8 +93,14 @@ export default function Topics({ params }: { params: { id: string } }) {
     }
   }
 
+  useEffect(() => {
+    validate()
+  }, [topics])
+
   function validate() {
-    return topics.some((t) => t.selected)
+    const valid = topics.some((t) => t.selected)
+    setShowError(!valid)
+    return valid
   }
 
   async function save() {

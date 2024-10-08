@@ -35,6 +35,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
   const [lockAudioTranscript, setLockAudioTranscript] = useState<{
     [id: string]: boolean
   }>({})
+  const [errorMessage, setErrorMessage] = useState('')
 
   const defaultLanguage = 'en-IN'
   const defaultLanguageId = languages.find((lang) => lang.code === defaultLanguage)?.id as string
@@ -84,7 +85,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
         body: JSON.stringify(topic)
       })
       const data = await response.json()
-      setAudioTranscript({ ...audioTranscript, [id]: data })
+      setAudioTranscript({ [id]: data })
     } catch {
     } finally {
       setLoading(false)
@@ -147,8 +148,32 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
     setLockAudioTranscript({ ...lockAudioTranscript, [id]: flag })
   }
 
+  useEffect(() => {
+    validate()
+  }, [audioTranscript, audioBase64])
+
+  function validate() {
+    if (course) {
+      for(const lang of course.languages) {
+        const name = languages.find((l) => l.id === lang.languageId)?.name
+        if (!audioTranscript[lang.languageId]) {  
+          setErrorMessage(`Please generate audio transcript for ${name}`)
+          return false
+        }
+        if (!audioBase64[lang.languageId]) {
+          setErrorMessage(`Please generate audio for ${name}`)
+          return false
+        }
+      }
+      setErrorMessage('')
+      return true
+    }
+    return false
+  }
+
   async function save() {
     try {
+      if (!validate()) return
       setLoading(true)
       const { } = await fetch(`/api/topic/${params.topicId}/content`, {
         method: 'POST',
@@ -290,6 +315,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
             <p className="text-sm text-muted-foreground">{topic?.description}</p>
           </div>
           {ContentTabs}
+          {errorMessage && <p className="text-[0.8rem] font-medium text-destructive">{errorMessage}</p>}
           <div>
             <Button disabled={loading} className="flex gap-4 items-center" onClick={save}>
               {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}

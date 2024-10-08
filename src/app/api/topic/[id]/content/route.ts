@@ -30,5 +30,11 @@ export async function POST(req: NextRequest,  { params }: { params: { id: string
     })))
     .select()
 
+  /* Update Course Status */
+  const { } = await supabase
+    .from('courses')
+    .update({ status: 'prototyping' })
+    .eq('id', audios[0].courseId)
+
   return NextResponse.json(null, { status: 200 });
 }
