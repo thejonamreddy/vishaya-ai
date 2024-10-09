@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { Translate } from "@google-cloud/translate/build/src/v2";
 
 const translate = new Translate({
-  key: process.env.CLOUD_TRANSLATION_API_KEY
+  key: process.env.GOOGLE_CLOUD_API_KEY
 });
 
 export async function POST(req: NextRequest) {
