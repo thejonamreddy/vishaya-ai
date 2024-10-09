@@ -203,6 +203,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
     <div className="flex flex-col gap-4 bg-white p-4 border rounded-md">
       <h2 className="font-semibold">{defaultLanguageName}</h2>
       <Textarea disabled={loading || defaultLockAudioTranscript} value={defaultAudioTranscript} />
+      <p className="text-sm text-muted-foreground">To optimize expenses, we are temporarily limiting this to 1500 characters</p>
       {defaultAudioUrl && <audio controls={!loading} src={defaultAudioUrl} onLoadedMetadata={(e) => onLoadedMetadata(e, defaultLanguageId)} />}
       {defaultLockAudioTranscript && (
         <div className="flex gap-4 items-center flex-wrap">
