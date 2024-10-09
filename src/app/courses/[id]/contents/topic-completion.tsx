@@ -5,7 +5,7 @@ import { TopicModel } from "@/app/models/topic";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Check, ChevronRight } from "lucide-react";
+import { ArrowRight, Check, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -36,9 +36,16 @@ export default function TopicCompletion({ loading, topics, contents, courseId }:
           ))}
         </div>
         {!topic.children.length && (
-          <Button variant={hasContent(topic) ? 'secondary' : 'default'} size="icon" onClick={() => redirectToTopic(topic)} disabled={loading || hasContent(topic)}>
-            {hasContent(topic) ? <Check className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-          </Button>
+          <div className="flex gap-4">
+            {hasContent(topic) && (
+              <Button variant="outline" size="icon" onClick={() => redirectToTopic(topic)} disabled={loading}>
+                <Eye className="h-4 w-4" />
+              </Button>
+            )}
+            <Button variant={hasContent(topic) ? 'secondary' : 'default'} size="icon" onClick={() => redirectToTopic(topic)} disabled={loading || hasContent(topic)}>
+              {hasContent(topic) ? <Check className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
+            </Button>
+          </div>
         )}
       </div>
     )
