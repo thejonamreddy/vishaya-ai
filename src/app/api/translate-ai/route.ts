@@ -1,22 +1,17 @@
 import { NextRequest, NextResponse } from "next/server"
+import { Translate } from "@google-cloud/translate/build/src/v2";
+
+const translate = new Translate({
+  key: process.env.CLOUD_TRANSLATION_API_KEY
+});
 
 export async function POST(req: NextRequest) {
   const { text, sourceLanguage, targetLanguage } = await req.json()
   
-  const response = await fetch('https://api.sarvam.ai/translate', {
-    method: 'POST',
-    headers: {
-      'API-Subscription-Key': process.env.SARVAM_API_KEY || "",
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      input: text,
-      source_language_code: sourceLanguage,
-      target_language_code: targetLanguage,
-      enable_preprocessing: true
-    })
+  const response = await translate.translate(text, {
+    from: sourceLanguage,
+    to: targetLanguage
   })
 
-  const result = await response.json();
-  return NextResponse.json(result.translated_text, { status: 200 });
+  return NextResponse.json(response[0], { status: 200 });
 }
