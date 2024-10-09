@@ -6,7 +6,7 @@ export function middleware(req: NextRequest) {
   ];
 
   /* Get the origin header from the request */
-  const origin = req.headers.get('host') || '' 
+  const origin = req.headers.get('host') || req.headers.get(':authority')  || '' 
 
   /* Check if the request comes from the allowed origin */
   if (allowedOrigins.includes(origin)) {
