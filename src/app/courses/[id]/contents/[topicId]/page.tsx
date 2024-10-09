@@ -205,7 +205,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
       <Textarea disabled={loading || defaultLockAudioTranscript} value={defaultAudioTranscript} />
       {defaultAudioUrl && <audio controls={!loading} src={defaultAudioUrl} onLoadedMetadata={(e) => onLoadedMetadata(e, defaultLanguageId)} />}
       {defaultLockAudioTranscript && (
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center flex-wrap">
           <Button disabled={loading} variant="outline" onClick={() => generateAudio(defaultLanguageId)} className="flex gap-4 items-center">
             {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <WandSparkles className="h-4 w-4" />}
             Generate Audio
@@ -217,7 +217,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
         </div>
       )}
       {!defaultLockAudioTranscript && (
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center flex-wrap">
           <Button variant="outline" disabled={loading} className="flex items-center gap-4" onClick={() => generateAudioTranscript(defaultLanguageId)}>
             {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <WandSparkles className="h-4 w-4" />}
             Generate Audio Transcript
@@ -238,7 +238,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
         <Textarea disabled={loading || lockAudioTranscript[id]} value={audioTranscript[id]} />
         {audioUrl[id] && <audio controls={!loading} src={audioUrl[id]} onLoadedMetadata={(e) => onLoadedMetadata(e, id)} />}
         {lockAudioTranscript[id] && (
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-4 items-center flex-wrap">
             <Button disabled={loading} variant="outline" onClick={() => generateAudio(id)} className="flex gap-4 items-center">
               {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <WandSparkles className="h-4 w-4" />}
               Generate Audio
@@ -250,7 +250,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
           </div>
         )}
         {!lockAudioTranscript[id] && (
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-4 items-center flex-wrap">
             <Button variant="outline" disabled={loading} className="flex items-center gap-4" onClick={() => translateAudioTranscript(id)}>
               {loading && <LoaderCircle className="h-4 w-4 animate-spin" />}
               Translate Audio Transcript
@@ -276,7 +276,7 @@ export default function TopicContentGeneration({ params }: { params: { id: strin
 
   const ContentTabs = (
     <Tabs defaultValue="audio-transcript">
-      <TabsList className="grid grid-cols-4 w-[768px] bg-muted-foreground/10">
+      <TabsList className="grid md:grid-cols-2 lg:grid-cols-4 lg:w-[768px] bg-muted-foreground/10 h-auto justify-normal">
         <TabsTrigger value="audio-transcript" disabled={loading}>Audio Transcript</TabsTrigger>
         <TabsTrigger value="content" disabled={loading}>Content</TabsTrigger>
         <TabsTrigger value="image" disabled={loading}>Image</TabsTrigger>

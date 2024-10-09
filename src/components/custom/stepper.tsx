@@ -37,7 +37,7 @@ export function Stepper({ step, course }: Props) {
   const filteredSteps = steps.filter((s) => s.status.includes(course.status))
 
   return (
-    <div className="flex items-center gap-4 bg-white p-4 border rounded-md">
+    <div className="flex items-center flex-wrap gap-4 bg-white p-4 border rounded-md">
       {filteredSteps.map((s, i) => (
           <Link key={i} href={s.url}>
           <div className="flex items-center gap-4">
