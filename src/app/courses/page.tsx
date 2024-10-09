@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react"
 import { Course } from "../interfaces/course"
-import { LoaderCircle } from "lucide-react"
+import { ArrowRight, LoaderCircle } from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Language } from "../interfaces/language"
 import Link from "next/link"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function Courses() {
   const [loading, setLoading] = useState(true)
@@ -51,51 +52,83 @@ export default function Courses() {
       {loading ? (
         <LoaderCircle className="h-6 w-6 animate-spin" />
       ) : (
-        <div className="bg-white p-4 border rounded-md">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Title</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Target Audience</TableHead>
-                <TableHead>Learning Objectives</TableHead>
-                <TableHead>Level</TableHead>
-                <TableHead>Duration</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Languages</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {courses.map(({ id, title, description, targetAudience, learningObjectives, level, duration, status, ...c }, i) => (
-                <TableRow key={i}>
-                  <TableCell>
-                    <Link href={`/courses/${id}/details`} className="text-muted-foreground underline">
-                      {title}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{description}</TableCell>
-                  <TableCell>{targetAudience}</TableCell>
-                  <TableCell>{learningObjectives}</TableCell>
-                  <TableCell>{level}</TableCell>
-                  <TableCell>{duration}</TableCell>
-                  <TableCell>{Status(status)}</TableCell>
-                  <TableCell>
-                    <div className="flex gap-4">
-                      {c.languages.map(({ languageId }, j) => (
-                        <Badge key={j}>{languages.find((l) => l.id === languageId)?.name}</Badge>
-                      ))}
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {!courses.length && (
+        <>
+          <div className="lg:hidden">
+            {!courses.length ? (
+              <div className="bg-white p-4 border rounded-md">
+                No data to display
+              </div>
+            ) : (
+              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+                {courses.map(({ id, title, description, ...c }) => (
+                  <Link key={id} href={`/courses/${id}/details`}>
+                    <Card className="shadow-none h-full">
+                      <CardHeader>
+                        <CardTitle className="flex gap-4">
+                          <span className="flex-1">{title}</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </CardTitle>
+                        <CardDescription>{description}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex gap-4">
+                          {c.languages.map(({ languageId }, j) => (
+                            <Badge key={j}>{languages.find((l) => l.id === languageId)?.name}</Badge>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="bg-white p-4 border rounded-md hidden lg:block">
+            <Table>
+              <TableHeader>
                 <TableRow>
-                  <TableCell colSpan={7} className="text-muted-foreground"> No data to display</TableCell>
+                  <TableHead>Title</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Target Audience</TableHead>
+                  <TableHead>Learning Objectives</TableHead>
+                  <TableHead>Level</TableHead>
+                  <TableHead>Duration</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Languages</TableHead>
                 </TableRow>
-              )}
-            </TableBody>
-          </Table >
-        </div>
+              </TableHeader>
+              <TableBody>
+                {courses.map(({ id, title, description, targetAudience, learningObjectives, level, duration, status, ...c }, i) => (
+                  <TableRow key={i}>
+                    <TableCell>
+                      <Link href={`/courses/${id}/details`} className="text-muted-foreground underline">
+                        {title}
+                      </Link>
+                    </TableCell>
+                    <TableCell>{description}</TableCell>
+                    <TableCell>{targetAudience}</TableCell>
+                    <TableCell>{learningObjectives}</TableCell>
+                    <TableCell>{level}</TableCell>
+                    <TableCell>{duration}</TableCell>
+                    <TableCell>{Status(status)}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-4">
+                        {c.languages.map(({ languageId }, j) => (
+                          <Badge key={j}>{languages.find((l) => l.id === languageId)?.name}</Badge>
+                        ))}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {!courses.length && (
+                  <TableRow>
+                    <TableCell colSpan={7} className="text-muted-foreground"> No data to display</TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table >
+          </div>
+        </>
       )
       }
     </div >
