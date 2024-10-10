@@ -29,7 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
-        <Toaster toastOptions={{ className: 'bg-red-100 border-red-300' }} />
+        <Toaster />
       </body>
       <GoogleAnalytics gaId="G-DKE14EJFC3" />
     </html>

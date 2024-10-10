@@ -8,7 +8,6 @@ import { Badge } from "@/components/ui/badge"
 import { Language } from "../interfaces/language"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { showError, showResponseError } from "../utils/error.util"
 
 export default function Courses() {
   const [loading, setLoading] = useState(true)
@@ -21,13 +20,11 @@ export default function Courses() {
       const languagesPromise = fetch('/api/language')
       const coursesPromise = fetch('/api/course')
       const response = await Promise.all([languagesPromise, coursesPromise])
-      if (response.some((r) => !r.ok)) { return showResponseError(response) }
       const languagesData = await response[0].json()
       const coursesData = await response[1].json()
       setLanguages(languagesData)
       setCourses(coursesData)
-    } catch (error) {
-      showError(error)
+    } catch {
     } finally {
       setLoading(false)
     }
