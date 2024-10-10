@@ -5,6 +5,8 @@ const client = new TextToSpeechClient({
   apiKey: process.env.GOOGLE_CLOUD_API_KEY
 });
 
+export const maxDuration = 30;
+
 export async function POST(req: NextRequest) {
   const { text, language } = await req.json()
 
