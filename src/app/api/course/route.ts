@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { Course } from "@/app/interfaces/course"
+import { CourseSchema } from "@/app/courses/course.schema"
 
 const supabaseUrl = process.env.SUPABASE_URL || ""
 const supabaseKey = process.env.SUPABASE_KEY || ""
@@ -26,6 +27,11 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const { title, description, targetAudience, learningObjectives, level, duration, languages } = await req.json() as Course
+
+  const result = CourseSchema.safeParse({ title, description, targetAudience, learningObjectives, level, duration, languages })
+  if (!result.success) {
+    return NextResponse.json({ error: result.error.message }, { status: 400 })
+  }
 
   const { data: course } = await supabase
     .from('courses')

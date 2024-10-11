@@ -21,6 +21,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Language } from "@/app/interfaces/language";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { durations, levels, targetAudiences } from "@/app/utils/util";
 
 export const CourseFormSchema = z.object({
   title: z.string({ required_error: "Title is required" }),
@@ -46,32 +47,6 @@ export default function CourseForm({ loading, languages, course, submit }: Props
   const title = searchParams.get('title')
 
   const canEdit = !course || (course.status === 'draft')
-
-  const targetAudiences = [
-    'Business Professionals',
-    'IT Professionals',
-    'Healthcare Professionals',
-    'Educators',
-    'Artists',
-    'Engineers',
-    'Scientists',
-    'Human Resources',
-    'Marketing',
-    'Finance',
-    'Legal'
-  ]
-
-  const levels = [
-    'Beginners',
-    'Intermediate',
-    'Advanced'
-  ]
-
-  const durations = [
-    '0 - 2 Hours',
-    '3 - 6 Hours',
-    '7 - 16 Hours',
-    '17+ Hours']
 
   const form = useForm<z.infer<typeof CourseFormSchema>>({
     resolver: zodResolver(CourseFormSchema),
