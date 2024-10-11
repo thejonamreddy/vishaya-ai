@@ -13,6 +13,7 @@ export async function GET(req: NextRequest) {
   const promise = supabase
     .from('courses')
     .select('*, languages:course-languages(*)')
+    .order('createdAt', { ascending: true })
 
   if (id) {
     promise.eq('id', id).single()

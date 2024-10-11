@@ -71,7 +71,7 @@ export default function Courses() {
                         <CardDescription>{description}</CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <div className="flex gap-4">
+                        <div className="flex gap-4 flex-wrap">
                           {c.languages.map(({ languageId }, j) => (
                             <Badge key={j}>{languages.find((l) => l.id === languageId)?.name}</Badge>
                           ))}
@@ -112,7 +112,7 @@ export default function Courses() {
                     <TableCell>{duration}</TableCell>
                     <TableCell>{Status(status)}</TableCell>
                     <TableCell>
-                      <div className="flex gap-4">
+                      <div className="flex gap-4 flex-wrap">
                         {c.languages.map(({ languageId }, j) => (
                           <Badge key={j}>{languages.find((l) => l.id === languageId)?.name}</Badge>
                         ))}
