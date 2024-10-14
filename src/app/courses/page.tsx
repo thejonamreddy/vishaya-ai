@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react"
+import { CSSProperties, useEffect, useState } from "react"
 import { Course } from "../interfaces/course"
 import { ArrowRight, LoaderCircle } from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -8,22 +8,43 @@ import { Badge } from "@/components/ui/badge"
 import { Language } from "../interfaces/language"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 
 export default function Courses() {
   const [loading, setLoading] = useState(true)
   const [languages, setLanguages] = useState<Language[]>([])
   const [courses, setCourses] = useState<Course[]>([])
+  const [page, setPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(10)
+  const [totalCount, setTotalCount] = useState(0)
+  const [initialRender, setInitialRender] = useState(true)
+
+  const totalPages = Math.ceil(totalCount / itemsPerPage)
 
   async function loadData() {
     try {
       setLoading(true)
       const languagesPromise = fetch('/api/language')
-      const coursesPromise = fetch('/api/course')
+      const coursesPromise = fetch(`/api/course?page=${page}&pageSize=${itemsPerPage}`)
       const response = await Promise.all([languagesPromise, coursesPromise])
       const languagesData = await response[0].json()
       const coursesData = await response[1].json()
       setLanguages(languagesData)
-      setCourses(coursesData)
+      setTotalCount(coursesData.totalCount)
+      setCourses(coursesData.list)
+    } catch {
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function loadCourses() {
+    try {
+      setLoading(true)
+      const response = await fetch(`/api/course?page=${page}&pageSize=${itemsPerPage}`)
+      const data = await response.json()
+      setTotalCount(data.totalCount)
+      setCourses(data.list)
     } catch {
     } finally {
       setLoading(false)
@@ -33,6 +54,38 @@ export default function Courses() {
   useEffect(() => {
     loadData()
   }, [])
+
+  useEffect(() => {
+    if (initialRender) {
+      setInitialRender(false)
+      return
+    }
+    loadCourses()
+  }, [page, itemsPerPage])
+
+  const prev = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  }
+
+  const next = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  }
+
+  const prevStyle = {
+    cursor: page === 1 ? 'not-allowed' : 'pointer',
+    pointerEvents: page === 1 ? 'none' : 'auto',
+    opacity: page === 1 ? 0.5 : 1
+  } as CSSProperties
+  
+  const nextStyle = {
+    cursor: page === totalPages ? 'not-allowed' : 'pointer',
+    pointerEvents: page === totalPages ? 'none' : 'auto',
+    opacity: page === totalPages ? 0.5 : 1
+  } as CSSProperties
 
   function Status(status: string) {
     if (status === 'draft') {
@@ -87,6 +140,7 @@ export default function Courses() {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead>#</TableHead>
                   <TableHead>Title</TableHead>
                   <TableHead>Description</TableHead>
                   <TableHead>Target Audience</TableHead>
@@ -100,6 +154,7 @@ export default function Courses() {
               <TableBody>
                 {courses.map(({ id, title, description, targetAudience, learningObjectives, level, duration, status, ...c }, i) => (
                   <TableRow key={i}>
+                    <TableCell className="text-muted-foreground">{totalCount - (page - 1) * itemsPerPage - i}</TableCell>
                     <TableCell>
                       <Link href={`/courses/${id}/details`} className="text-muted-foreground underline">
                         {title}
@@ -128,9 +183,28 @@ export default function Courses() {
               </TableBody>
             </Table >
           </div>
+          {totalCount > 0 && (
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious onClick={prev} style={prevStyle} />
+                </PaginationItem>
+                {Array.from({ length: totalPages }).map((_, i) => (
+                  <PaginationItem key={i}>
+                    <PaginationLink onClick={() => setPage(i + 1)} isActive={page === i + 1}>{i + 1}</PaginationLink>
+                  </PaginationItem>
+                ))}
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext onClick={next} style={nextStyle} />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          )}
         </>
-      )
-      }
+      )}
     </div >
   )
 }

@@ -10,19 +10,31 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams
   const id = searchParams.get('id')
+  const page = parseInt(searchParams.get('page') || '1')
+  const pageSize = parseInt(searchParams.get('pageSize') || '10')
 
-  const promise = supabase
-    .from('courses')
-    .select('*, languages:course-languages(*)')
-    .order('createdAt', { ascending: true })
+  const start = (page - 1) * pageSize
+  const end = (page * pageSize) - 1
 
   if (id) {
-    promise.eq('id', id).single()
+    const { data } = await supabase
+      .from('courses')
+      .select('*, languages:course-languages(*)')
+      .eq('id', id)
+      .single()
+
+    return NextResponse.json(data, { status: 200 });
+  } else {
+    const { data, count } = await supabase
+      .from('courses')
+      .select('*, languages:course-languages(*)', { count: 'exact' })
+      .order('createdAt', { ascending: false })
+      .range(start, end)
+    return NextResponse.json({
+      totalCount: count,
+      list: data
+    }, { status: 200 });
   }
-
-  const { data } = await promise
-
-  return NextResponse.json(data, { status: 200 });
 }
 
 export async function POST(req: NextRequest) {
