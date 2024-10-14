@@ -9,6 +9,7 @@ import { Language } from "../interfaces/language"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function Courses() {
   const [loading, setLoading] = useState(true)
@@ -80,7 +81,7 @@ export default function Courses() {
     pointerEvents: page === 1 ? 'none' : 'auto',
     opacity: page === 1 ? 0.5 : 1
   } as CSSProperties
-  
+
   const nextStyle = {
     cursor: page === totalPages ? 'not-allowed' : 'pointer',
     pointerEvents: page === totalPages ? 'none' : 'auto',
@@ -184,24 +185,36 @@ export default function Courses() {
             </Table >
           </div>
           {totalCount > 0 && (
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious onClick={prev} style={prevStyle} />
-                </PaginationItem>
-                {Array.from({ length: totalPages }).map((_, i) => (
-                  <PaginationItem key={i}>
-                    <PaginationLink onClick={() => setPage(i + 1)} isActive={page === i + 1}>{i + 1}</PaginationLink>
-                  </PaginationItem>
-                ))}
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationNext onClick={next} style={nextStyle} />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+              <div className="flex gap-4">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious onClick={prev} style={prevStyle} />
+                    </PaginationItem>
+                    {Array.from({ length: totalPages }).map((_, i) => (
+                      <PaginationItem key={i}>
+                        <PaginationLink onClick={() => setPage(i + 1)} isActive={page === i + 1}>{i + 1}</PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    <PaginationItem>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationNext onClick={next} style={nextStyle} />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+                <Select value={itemsPerPage.toString()} onValueChange={(value) => setItemsPerPage(parseInt(value))}>
+                  <SelectTrigger className="w-24">
+                    <SelectValue placeholder="Items Per Page" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="10">10</SelectItem>
+                    <SelectItem value="25">25</SelectItem>
+                    <SelectItem value="50">50</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
           )}
         </>
       )}
