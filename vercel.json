@@ -1,8 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/api/course?page=1&pageSize=1",
-      "schedule": "0 9 * * 1"
-    }
-  ]
-}
