@@ -24,15 +24,13 @@ import Link from "next/link";
 import { durations, levels, targetAudiences } from "@/app/utils/util";
 
 export const CourseFormSchema = z.object({
-  title: z.string({ required_error: "Title is required" }),
-  description: z.string({ required_error: "Description is required" }),
-  targetAudience: z.string({ required_error: "Target Audience is required" }),
-  learningObjectives: z.string({ required_error: "Learning Objectives is required" }),
-  level: z.string({ required_error: "Level is required" }),
-  duration: z.string({ required_error: "Duration is required" }),
-  languages: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "Language is required",
-  }),
+  title: z.string({ required_error: "Title is required" }).min(3, { message: "Title must be at least 3 characters" }),
+  description: z.string({ required_error: "Description is required" }).min(10, { message: "Description must be at least 10 characters" }),
+  targetAudience: z.enum(targetAudiences as [string, ...string[]], { required_error: "Target Audience is required", message: "Target Audience is required" }),
+  learningObjectives: z.string({ required_error: "Learning Objectives is required" }).min(10, { message: "Learning Objectives must be at least 10 characters" }),
+  level: z.enum(levels as [string, ...string[]], { required_error: "Level is required", message: "Level is required" }),
+  duration: z.enum(durations as [string, ...string[]], { required_error: "Duration is required", message: "Duration is required" }),
+  languages: z.array(z.string()).min(1, { message: "At least one language is required" })
 })
 
 interface Props {
