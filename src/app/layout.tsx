@@ -30,6 +30,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
         <Toaster />
+        <script src="https://chat-ai-widget.vercel.app/loader.js?projectId=z5GpxRz3BcEUS5nZxEck" async></script>
       </body>
       <GoogleAnalytics gaId="G-DKE14EJFC3" />
     </html>
