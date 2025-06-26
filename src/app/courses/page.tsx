@@ -10,6 +10,8 @@ import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { TextHoverCard } from "@/components/custom/text-hover-card"
+import { LanguageBadges } from "@/components/custom/language-badges"
 
 export default function Courses() {
   const [loading, setLoading] = useState(true)
@@ -161,18 +163,18 @@ export default function Courses() {
                         {title}
                       </Link>
                     </TableCell>
-                    <TableCell>{description}</TableCell>
+                    <TableCell>
+                      <TextHoverCard text={description} />
+                    </TableCell>
                     <TableCell>{targetAudience}</TableCell>
-                    <TableCell>{learningObjectives}</TableCell>
+                    <TableCell>
+                      <TextHoverCard text={learningObjectives} />
+                    </TableCell>
                     <TableCell>{level}</TableCell>
                     <TableCell>{duration}</TableCell>
                     <TableCell>{Status(status)}</TableCell>
                     <TableCell>
-                      <div className="flex gap-4 flex-wrap">
-                        {c.languages.map(({ languageId }, j) => (
-                          <Badge key={j}>{languages.find((l) => l.id === languageId)?.name}</Badge>
-                        ))}
-                      </div>
+                      <LanguageBadges languages={languages} courseLanguages={c.languages} />
                     </TableCell>
                   </TableRow>
                 ))}
