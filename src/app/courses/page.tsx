@@ -207,10 +207,10 @@ export default function Courses() {
                   </PaginationContent>
                 </Pagination>
                 <Select value={itemsPerPage.toString()} onValueChange={(value) => setItemsPerPage(parseInt(value))}>
-                  <SelectTrigger className="w-24">
+                  <SelectTrigger className="w-24 bg-white">
                     <SelectValue placeholder="Items Per Page" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     <SelectItem value="10">10</SelectItem>
                     <SelectItem value="25">25</SelectItem>
                     <SelectItem value="50">50</SelectItem>
